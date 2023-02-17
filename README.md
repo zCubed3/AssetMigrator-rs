@@ -1,8 +1,11 @@
-# Prefab Converter (Rust Edition)
+# Asset Migrator (Rust Edition)
 
 ### DISCLAIMER!
-This is a rewrite/port of https://github.com/notnotnotswipez/PrefabConverter to Rust!
+This is a rewrite + extension of https://github.com/notnotnotswipez/PrefabConverter to Rust!
 All credit goes to notnotswipez for his original implementation.
 
 ### What is this?
-TODO
+Ever had files from one Unity project you wanted to migrate to another?
+Usually you'd export a package, but this isn't ideal when exporting giant amounts of assets!
+
+Asset migrator helps solve that problem by resolving meta files for you and copying data properly!

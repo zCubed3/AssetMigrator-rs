@@ -22,7 +22,7 @@ fn collect_recurse<P: AsRef<Path>>(path: P, dirs: &mut Vec<PathBuf>) {
     }
 }
 
-fn collect_meta_files(path: &str) -> Vec<MetaFile> {
+fn collect_meta_files(path: String) -> Vec<MetaFile> {
     // First fetch all the directories within a project
     let mut dirs = Vec::<PathBuf>::new();
     collect_recurse(path, &mut dirs);
@@ -66,6 +66,23 @@ fn main() {
     // Handle arguments
     let args: Vec<String> = env::args().collect();
 
+    let mut src_assets = String::new();
+    let mut dst_assets = String::new();
+
+    if args.len() > 1 {
+        // Minimum is 4
+        if args.len() < 3 {
+            println!("Proper usage of prefab_converter.exe is as follows\n");
+            println!("\t ./prefab_converter.exe [src assets path] [dst assets path] ...");
+            println!("\n... = Any number of valid prefab paths (in the source assets path)!");
+
+            panic!();
+        }
+    } else {
+        // TODO: ASK FOR ARGS!
+        panic!("Improper arguments!");
+    }
+
     // Before we export, create the temp folder
     let _ = create_dir("ConversionOutput");
 
@@ -75,10 +92,10 @@ fn main() {
 
     {
         println!("Collecting source meta files...");
-        let src_metas = collect_meta_files("F:/Plastic SCM/LakaVRCore/Assets");
+        let src_metas = collect_meta_files(src_assets);
 
         println!("Collecting destination meta files...");
-        let dst_metas = collect_meta_files("E:/Unity Projects/ASVRP 2/Assets");
+        let dst_metas = collect_meta_files(dst_assets);
 
         //let drop = Dropwatch::new_begin("OVERLAPPING");
 

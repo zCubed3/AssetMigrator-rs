@@ -1,6 +1,6 @@
 use std::io::{BufReader, BufRead};
 use std::fs::{File};
-use std::path::{PathBuf};
+use std::path::{PathBuf, Path};
 use std::hash::{Hash, Hasher};
 use std::collections::hash_map::DefaultHasher;
 
@@ -64,8 +64,9 @@ impl MetaFile {
     }
 
     /// Returns the asset and meta file paths with a new stem
-    pub fn get_paths_stem(&self, stem: &String) -> (String, String) {
-        let mut asset_path = PathBuf::from(stem);
+    pub fn get_paths_stem<P: AsRef<Path>>(&self, stem: P) -> (String, String) {
+        let mut asset_path = PathBuf::new();
+        asset_path.push(stem);
         asset_path.push(&self.base_name);
 
         let asset_path_string = asset_path.display().to_string();

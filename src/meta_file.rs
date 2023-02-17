@@ -21,7 +21,7 @@ pub fn collect_recurse<P: AsRef<Path>>(path: P, dirs: &mut Vec<PathBuf>) {
     }
 }
 
-pub fn collect_meta_files(path: String) -> Vec<MetaFile> {
+pub fn collect_meta_files(path: &String) -> Vec<MetaFile> {
     // First fetch all the directories within a project
     let mut dirs = Vec::<PathBuf>::new();
     collect_recurse(path, &mut dirs);

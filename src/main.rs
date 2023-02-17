@@ -10,6 +10,11 @@ use std::io::Read;
 use crate::dropwatch::Dropwatch;
 use crate::meta_file::*;
 
+// TODO: Let the user decide this
+const CONVERT_EXTENSIONS: &'static [&'static str] = &[
+    ".prefab", ".mat", ".asset", ".unity"
+];
+
 #[derive(Default, Debug)]
 struct AssetConversion {
     path: String,
@@ -170,15 +175,19 @@ fn main() {
 
                     // If this is a prefab, push it to the list of queued conversions
                     // If it hasn't been pushed already!
-                    if missing_meta.base_name.ends_with(".prefab") || missing_meta.base_name.ends_with(".mat") {
-                        let mut convert = AssetConversion::default();
-                        convert.path = asset_src_path.clone();
+                    for ext in CONVERT_EXTENSIONS {
+                        if missing_meta.base_name.ends_with(ext){
+                            let mut convert = AssetConversion::default();
+                            convert.path = asset_src_path.clone();
 
-                        if !convert_queue.contains(&convert) {
-                            println!("Converting referenced asset {:?}", asset_src_path);
+                            if !convert_queue.contains(&convert) {
+                                println!("Converting referenced asset {:?}", asset_src_path);
 
-                            convert.output_path = relative_export_path.display().to_string();
-                            convert_queue.push(convert);
+                                convert.output_path = relative_export_path.display().to_string();
+                                convert_queue.push(convert);
+                            }
+
+                            break;
                         }
                     }
 

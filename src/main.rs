@@ -1,3 +1,5 @@
+mod dropwatch;
+
 use std::fs::{File, FileType, read_dir};
 use std::io::{BufRead, BufReader};
 use std::path::{Path, PathBuf};
@@ -145,8 +147,32 @@ fn collect_meta_files(path: &str) -> Vec<MetaFile> {
         println!("{:?}", dir);
     }
 
-    let mut collector = MetaFileCollector::new(dirs);
-    collector.wait();
+    let collect_multi = false;
+    if collect_multi {
+        let drop = dropwatch::Dropwatch::new_begin("COLLECT_MULTI");
+        let mut collector = MetaFileCollector::new(dirs);
+
+        collector.wait();
+    } else {
+        let mut metas = Vec::<MetaFile>::new();
+        let drop = dropwatch::Dropwatch::new_begin("COLLECT_SINGLE");
+
+        for path in dirs {
+            for entry_result in read_dir(path).expect("Failed to read given path!") {
+                // If we can't read a meta file we probably shouldn't be in here
+                let entry = entry_result.expect("Failed to read file in given path!");
+
+                if let Some(extension) = entry.path().extension() {
+                    if extension == "meta" {
+                        let meta = MetaFile::read_from_path(entry.path()).unwrap();
+
+                        //println!("{:?}", meta);
+                        metas.push(meta);
+                    }
+                }
+            }
+        }
+    }
 
     return vec!();
 }

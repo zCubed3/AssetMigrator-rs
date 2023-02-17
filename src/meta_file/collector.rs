@@ -21,7 +21,17 @@ impl MetaFileCollector {
         let condvar = Arc::new((Mutex::new(false), Condvar::new()));
 
         // TODO: Get hardware concurrency?
-        for _ in 0 .. 16 {
+        let thread_count = std::thread::available_parallelism().unwrap().get();
+
+        #[cfg(debug_assertions)]
+        {
+            println!("USING {} THREADS", thread_count);
+        }
+
+        for _ in 0usize .. thread_count {
+
+
+
             let work_paths = Arc::clone(&work_paths);
             let meta_files = Arc::clone(&meta_files);
             let condvar = Arc::clone(&condvar);

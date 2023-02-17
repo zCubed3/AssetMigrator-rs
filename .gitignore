@@ -16,3 +16,6 @@ Cargo.lock
 # IDEs
 .vs/
 .idea/
+
+# Program outputs
+ConversionOutput/

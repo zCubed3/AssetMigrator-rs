@@ -11,13 +11,13 @@ use crate::dropwatch::Dropwatch;
 use crate::meta_file::*;
 
 #[derive(Default, Debug)]
-struct PrefabConversion {
+struct AssetConversion {
     path: String,
     output_path: String,
 }
 
-impl PartialEq<PrefabConversion> for PrefabConversion {
-    fn eq(&self, other: &PrefabConversion) -> bool {
+impl PartialEq<AssetConversion> for AssetConversion {
+    fn eq(&self, other: &AssetConversion) -> bool {
         return self.path == other.path;
     }
 }
@@ -103,7 +103,7 @@ fn main() {
     //
     println!("[Conversion Stage]");
 
-    let mut convert_queue = Vec::<PrefabConversion>::new();
+    let mut convert_queue = Vec::<AssetConversion>::new();
 
     for a in 3 .. args.len() {
         let prefab_dir = PathBuf::from(&args[a]);
@@ -111,7 +111,7 @@ fn main() {
         relative_export_path.push(prefab_dir.strip_prefix(&src_assets).unwrap());
         relative_export_path.pop();
 
-        let mut convert = PrefabConversion::default();
+        let mut convert = AssetConversion::default();
         convert.path = args[a].clone();
         convert.output_path = relative_export_path.display().to_string();
 
@@ -170,12 +170,12 @@ fn main() {
 
                     // If this is a prefab, push it to the list of queued conversions
                     // If it hasn't been pushed already!
-                    if missing_meta.base_name.ends_with(".prefab") {
-                        let mut convert = PrefabConversion::default();
+                    if missing_meta.base_name.ends_with(".prefab") || missing_meta.base_name.ends_with(".mat") {
+                        let mut convert = AssetConversion::default();
                         convert.path = asset_src_path.clone();
 
                         if !convert_queue.contains(&convert) {
-                            println!("Converting referenced prefab {:?}", asset_src_path);
+                            println!("Converting referenced asset {:?}", asset_src_path);
 
                             convert.output_path = relative_export_path.display().to_string();
                             convert_queue.push(convert);

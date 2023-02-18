@@ -29,15 +29,12 @@ impl MetaFileCollector {
         }
 
         for _ in 0usize .. thread_count {
-
-
-
             let work_paths = Arc::clone(&work_paths);
             let meta_files = Arc::clone(&meta_files);
             let condvar = Arc::clone(&condvar);
 
             threads.push(spawn(move || {
-                MetaFileCollector::collector_loop(condvar, work_paths, meta_files)
+                Self::collector_loop(condvar, work_paths, meta_files);
             }));
         }
 

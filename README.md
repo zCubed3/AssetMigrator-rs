@@ -2,7 +2,7 @@
 
 ### DISCLAIMER!
 This is a rewrite + extension of https://github.com/notnotnotswipez/PrefabConverter to Rust!
-All credit goes to notnotswipez for his original implementation.
+All credit goes to notnotnotswipez for his original implementation.
 
 ### What is this?
 Ever had files from one Unity project you wanted to migrate to another?

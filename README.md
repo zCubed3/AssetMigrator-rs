@@ -1,4 +1,4 @@
-# Asset Migrator (Rust Edition)
+# Unity Meta + Asset Migrator
 
 ### DISCLAIMER!
 This is a rewrite + extension of https://github.com/notnotnotswipez/PrefabConverter to Rust!
